@@ -3,11 +3,16 @@ import React, { useState, useEffect } from 'react';
 const Home = () => {
   // Use state init a normal state with mutation func
   const [ count, setCount ] = useState(0);
+  const [ age, setAge ] = useState(18);
 
-  // Listener, triggered when a hook is used
+  // Listener, triggered after each render
   useEffect(() => {
-    document.title = `You clicked ${count} times`;
-  });
+    console.log('effect');
+
+    return () => {
+      console.log('effect callback');
+    };
+  }, [count]); // 2nd param contain array of value(s), if one change, useEffect will be called
 
   return (
     <div>
@@ -15,6 +20,9 @@ const Home = () => {
       </p>
       <button onClick={() => setCount(count + 1)}>
         Click me
+      </button>
+      <button onClick={() => setAge(age + 1)}>
+        Don't click !
       </button>
     </div>
   );
