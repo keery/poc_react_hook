@@ -1,0 +1,16 @@
+{
+  "name": "boilerplate-react-node",
+  "version": "1.0.0",
+  "scripts": {
+    "client-dev": "cd client && npm run start",
+    "server-dev": "cd server && npm run dev",
+    "client-dependencies": "cd client && npm i",
+    "server-dependencies": "cd server && npm i",
+    "dev": "SET NODE_ENV=development && concurrently --kill-others-on-fail \"npm run server-dev\" \"npm run client-dev\"",
+    "i": "npm install && concurrently --kill-others-on-fail \"npm run server-dependencies\" \"npm run client-dependencies\""
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1"
+  },
+  "dependencies": {}
+}
