@@ -1,32 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useRef } from "react";
 
 const Home = () => {
-  // Use state init a normal state with mutation func
-  const [ count, setCount ] = useState(0);
-  const [ age, setAge ] = useState(18);
+  const [count, setCount] = useState(0);
+  const [delay, setDelay] = useState(500);
+  const [isRunning, setIsRunning] = useState(true);
 
-  // Listener, triggered after each render
-  useEffect(() => {
-    console.log('effect');
-
-    return () => {
-      console.log('effect callback');
-    };
-  }, [count]); // 2nd param contain array of value(s), if one change, useEffect will be called
+  useInterval(() => {
+    setCount(count + 1);
+  }, isRunning ? delay : null);
 
   return (
-    <div>
-      <p>You clicked {count} times
-      </p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
-      <button onClick={() => setAge(age + 1)}>
-        Don't click !
-      </button>
-    </div>
+    <Fragment>
+      <h1>{count}</h1>
+      <div>
+        Mettre en pause le timer <input type="checkbox" onChange={() => setIsRunning(isRunning ? false : true)}/>
+      </div>
+    </Fragment>
   );
 }
-  
+
+
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest function.
+  useEffect(
+    () => {
+      savedCallback.current = callback;
+    },
+    [callback]
+  );
+
+  // Set up the interval.
+  useEffect(
+    () => {
+      function tick() {
+        // I execute my callback
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    },
+    [delay]
+  );
+}
 
 export default Home
